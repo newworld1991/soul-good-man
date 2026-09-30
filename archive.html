@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>아카이브 · 디스플레이 뉴스 데일리</title>
+<meta name="description" content="디스플레이 업계 소식을 매일 한국어로 요약해 전합니다.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="아카이브 · 디스플레이 뉴스 데일리">
+<meta property="og:description" content="디스플레이 업계 소식을 매일 한국어로 요약해 전합니다.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%B0%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="brand" href="index.html">디스플레이 뉴스 데일리</a>
+    <nav><a href="index.html">홈</a><a href="archive.html">아카이브</a></nav>
+  </div>
+  <div class="wrap chips"><a class="chip" href="category-xr.html">XR·마이크로디스플레이</a><a class="chip" href="category-business.html">기업·투자·실적</a><a class="chip" href="category-microled.html">마이크로LED·미니LED</a><a class="chip" href="category-oled.html">OLED</a><a class="chip" href="category-freeform.html">프리폼(폴더블·롤러블·투명)</a><a class="chip" href="category-materials.html">부품·소재·장비</a><a class="chip" href="category-automotive.html">차량용 디스플레이</a><a class="chip" href="category-beyond.html">차세대 디스플레이</a><a class="chip" href="category-patent.html">특허·소송</a><a class="chip" href="category-lcd.html">LCD</a></div>
+  <div class="wrap chips ctrybar" hidden><button type="button" class="chip" data-c="">전체</button><button type="button" class="chip" data-c="한국">🇰🇷 한국</button><button type="button" class="chip" data-c="중국">🇨🇳 중국</button><button type="button" class="chip" data-c="일본">🇯🇵 일본</button><button type="button" class="chip" data-c="대만">🇹🇼 대만</button><button type="button" class="chip" data-c="미국">🇺🇸 미국</button><button type="button" class="chip" data-c="기타">🌐 기타</button></div>
+</header>
+<main class="wrap">
+<h1>아카이브</h1>
+<h2>2026년 9월</h2>
+<ul class="days">
+<li><a href="2026-09-30.html">2026년 9월 30일 (수)</a><span class="count">86건</span></li>
+</ul>
+</main>
+<footer><div class="wrap"><p>기사 원문의 저작권은 각 언론사에 있습니다. 이 사이트는 제목과 원문 링크, 자체 생성한 요약만 제공하며 요약은 AI가 작성하므로 오류가 있을 수 있습니다. 정확한 내용은 원문에서 확인하세요.</p></div></footer>
+<script>
+(function(){
+  var KEY="country", bar=document.querySelector(".ctrybar");
+  if(!bar||!document.querySelector(".card"))return;
+  bar.hidden=false;
+  function apply(c){
+    document.querySelectorAll(".ctrybar button").forEach(function(b){b.classList.toggle("on",b.dataset.c===c);});
+    document.querySelectorAll(".card").forEach(function(el){el.hidden=!!c&&el.dataset.country!==c;});
+    document.querySelectorAll("h2 .count").forEach(function(n){
+      var k=0,el=n.parentElement.nextElementSibling;
+      while(el&&el.tagName!=="H2"){if(el.classList.contains("card")&&!el.hidden)k++;el=el.nextElementSibling;}
+      n.textContent=k+"건";
+    });
+    try{c?localStorage.setItem(KEY,c):localStorage.removeItem(KEY);}catch(e){}
+  }
+  bar.addEventListener("click",function(e){var b=e.target.closest("button");if(b)apply(b.dataset.c);});
+  var saved="";try{saved=localStorage.getItem(KEY)||"";}catch(e){}
+  if(saved&&!bar.querySelector('button[data-c="'+saved+'"]'))saved="";
+  apply(saved);
+})();
+</script>
+</body>
+</html>
