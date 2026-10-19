@@ -1,12 +1,14 @@
-:root{--bg:#fafaf9;--fg:#1c1917;--muted:#78716c;--line:#e7e5e4;--card:#fff;--accent:#1d4ed8;--chip:#f5f5f4;--badge:#dc2626}
-@media (prefers-color-scheme:dark){:root{--bg:#0c0a09;--fg:#e7e5e4;--muted:#a8a29e;--line:#292524;--card:#1c1917;--accent:#93c5fd;--chip:#292524;--badge:#f87171}}
+:root{--bg:#fafaf9;--fg:#1c1917;--muted:#78716c;--line:#e7e5e4;--card:#fff;--accent:#1d4ed8;--chip:#f5f5f4;--badge:#dc2626;
+--pf:#1d4ed8;--pfb:rgba(37,99,235,.07);--pi:#b45309;--pib:rgba(217,119,6,.09);--po:#047857;--pob:rgba(5,150,105,.08)}
+@media (prefers-color-scheme:dark){:root{--bg:#0c0a09;--fg:#e7e5e4;--muted:#a8a29e;--line:#292524;--card:#1c1917;--accent:#93c5fd;--chip:#292524;--badge:#f87171;
+--pf:#93c5fd;--pfb:rgba(96,165,250,.13);--pi:#fbbf24;--pib:rgba(251,191,36,.12);--po:#6ee7b7;--pob:rgba(52,211,153,.11)}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;-webkit-text-size-adjust:100%}
 a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
 .wrap{max-width:760px;margin:0 auto;padding:0 18px}
-header{border-bottom:1px solid var(--line);padding:14px 0 10px;background:var(--bg);position:sticky;top:0;z-index:2}
+header{border-bottom:1px solid var(--line);padding:14px 0 10px;background:var(--bg);position:sticky;top:0;z-index:20}
 header .wrap:first-child{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.brand{font-weight:800;font-size:19px;color:var(--fg)}
+.brand{font-weight:800;font-size:19px;color:var(--fg)}.brand em{font:italic 600 13.5px Georgia,"Times New Roman",serif;color:var(--muted);margin-left:10px}
 nav{display:flex;gap:14px;font-size:14px;flex-wrap:wrap}
 .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
 [hidden]{display:none!important}
@@ -36,11 +38,9 @@ ul.days{list-style:none;padding:0;margin:0}ul.days li{padding:7px 0;border-botto
 .issues .note,.moved{font-size:13px;color:var(--muted);margin:-4px 0 12px}
 .issue{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:12px;padding:14px 16px;margin:0 0 14px}
 .issue .top{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--muted)}
-.issue .rank,.iss .rank{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--accent);color:var(--bg);font-weight:700;font-size:12.5px}
+.issue .rank{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:var(--accent);color:var(--bg);font-weight:700;font-size:12.5px}
 .issue h3{font-size:18px;line-height:1.45;margin:6px 0 4px}
-.issue h4,.iss h4{font-size:14px;margin:12px 0 2px}
-.issue p,.ibody p{margin:2px 0}.issue ul,.ibody ul{margin:2px 0;padding-left:20px}.issue li,.ibody li{margin:2px 0}
-.ai{display:inline-block;white-space:nowrap;font-size:11px;font-weight:600;color:var(--accent);border:1px solid var(--accent);border-radius:4px;padding:0 5px;margin-left:4px;vertical-align:1px}
+.issue p{margin:2px 0}.issue ul{margin:2px 0;padding-left:20px}.issue li{margin:2px 0}
 .infer{white-space:nowrap;font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:4px;padding:0 4px;margin-left:5px}
 .ref{font-size:11px;vertical-align:super;line-height:0;margin-left:1px}
 .srcs{margin-top:12px;padding-top:10px;border-top:1px dashed var(--line);font-size:13.5px}
@@ -51,31 +51,15 @@ ul.days{list-style:none;padding:0;margin:0}ul.days li{padding:7px 0;border-botto
 .issue{scroll-margin-top:170px}.issue:target{border-left-color:var(--badge)}
 footer{border-top:1px solid var(--line);color:var(--muted);font-size:13px;padding:18px 0 34px}
 header .wrap,.home .wrap{max-width:1180px}
-.vh{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-.dateline{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 12px}
-.dateline strong{font-size:20px}.dateline .stat,.dateline .lead{color:var(--muted);font-size:14px;margin:0}.dateline .lead{margin-left:auto}
-.dash{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);grid-template-areas:"iss news" "past news";grid-template-rows:auto 1fr;column-gap:36px;align-items:start}
-.col-iss{grid-area:iss}.col-news{grid-area:news}.col-past{grid-area:past}
-.dash h2{margin:18px 0 12px}.home h2 a{color:var(--fg)}.home h2 a:hover{color:var(--accent)}
+.home h2 a{color:var(--fg)}.home h2 a:hover{color:var(--accent)}
 .rows2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:36px}
 .off{display:none!important}.home h2{scroll-margin-top:96px}
 .pg{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 4px}
 .pg button{font:inherit;font-size:13.5px;min-width:34px;height:32px;padding:0 10px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--fg);cursor:pointer}
 .pg button:hover{border-color:var(--accent);color:var(--accent)}.pg button.on{background:var(--accent);border-color:var(--accent);color:var(--bg)}
 .earlier{margin-top:20px}
-.col-iss .note{font-size:13px;color:var(--muted);margin:-4px 0 12px}
-.iss{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:12px;margin:0 0 10px}
-.iss>summary,.row>summary{display:block;list-style:none;cursor:pointer;position:relative}
-.iss>summary::-webkit-details-marker,.row>summary::-webkit-details-marker{display:none}
-.iss>summary{padding:12px 16px 11px 50px}
-.iss .rank{position:absolute;left:16px;top:14px;width:24px;height:24px}
-.iss h3{font-size:17px;line-height:1.45;margin:0}.iss>summary:hover h3{color:var(--accent)}
-.iss .gist{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;font-size:14.5px;color:var(--muted);margin-top:3px}
-.iss .im{display:flex;gap:10px;align-items:center;font-size:12.5px;color:var(--muted);margin-top:6px}
-.iss .tg{margin-left:auto;color:var(--accent);font-weight:600;white-space:nowrap}
-.iss .tg .o::after{content:" ▾"}.iss .tg .c::after{content:" ▴"}
-.iss .tg .c,.iss[open] .tg .o,.iss[open] .gist{display:none}.iss[open] .tg .c{display:inline}
-.iss .ibody{padding:0 16px 14px 50px}
+.row>summary{display:block;list-style:none;cursor:pointer;position:relative}
+.row>summary::-webkit-details-marker{display:none}
 .row{border-bottom:1px solid var(--line)}
 .row>summary{padding:9px 24px 9px 0}
 .row>summary::after{content:"▾";position:absolute;right:4px;top:11px;font-size:12px;color:var(--muted)}
@@ -85,7 +69,15 @@ header .wrap,.home .wrap{max-width:1180px}
 .row .badge{margin-right:6px;vertical-align:1px}
 .row .rbody{padding:0 0 12px;font-size:14.5px}
 .row .sum{margin:0 0 4px}.row .why{margin:4px 0;font-size:13.5px}.row .meta{margin-top:6px}
-.col-news .ctrybar{margin:0 0 10px;gap:5px}.col-news .ctrybar .chip{font-size:12.5px;padding:1px 9px}.col-news .moved{margin:0 0 4px}
+.parts p{margin:2px 0}.parts ul{margin:2px 0;padding-left:20px}.parts li{margin:2px 0}
+.pt{border-radius:10px;padding:8px 12px 9px;margin:8px 0 0}
+.pt h4{display:flex;align-items:center;gap:6px;font-size:13.5px;margin:0 0 3px}.pt h4::before{content:"";width:8px;height:8px;border-radius:50%;background:currentColor;flex:none}
+.pt-f{background:var(--pfb)}.pt-f h4{color:var(--pf)}.pt-i{background:var(--pib)}.pt-i h4{color:var(--pi)}.pt-o{background:var(--pob)}.pt-o h4{color:var(--po)}
+
+.chip.ty{background:var(--accent);color:var(--bg);font-weight:600}.card .top .ctry+.ctry::before{content:"· "}
+.rg h2{scroll-margin-top:110px}.rg .chips{margin:6px 0 4px}
+.home .ctrybar{margin:0 0 10px;gap:5px}.home .ctrybar .chip{font-size:12.5px;padding:1px 9px}
+.past-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));column-gap:36px}
 .col-past h3{font-size:13.5px;font-weight:600;margin:12px 0 4px}.col-past h3 a{color:var(--muted)}
 .col-past ol{margin:0;padding-left:22px;font-size:14px}.col-past li{margin:3px 0}.col-past li a{color:var(--fg)}.col-past li a:hover{color:var(--accent)}
 .wk .note{font-size:13px;color:var(--muted);margin:-4px 0 12px}
@@ -95,6 +87,33 @@ header .wrap,.home .wrap{max-width:1180px}
 .cnt th,.cnt td{border-bottom:1px solid var(--line);padding:4px 8px;text-align:right}.cnt th:first-child,.cnt td:first-child{text-align:left}
 .cnt th{color:var(--muted);font-weight:600}.up{color:var(--badge)}.down{color:var(--accent)}
 .wsrc{font-size:13.5px;padding-left:22px}.wsrc .src{color:var(--muted);margin-left:4px}.wsrc li:target{background:var(--chip);border-radius:4px}
-@media (max-width:959px){.dash{grid-template-columns:minmax(0,1fr);grid-template-areas:"iss" "news" "past";grid-template-rows:auto}.rows2{grid-template-columns:minmax(0,1fr)}.dateline .lead{margin-left:0;flex-basis:100%}}
+/* 홈 머리: 지구·삼국 깃발(globe.svg) + 수묵 산(mountains.svg). 화면 높이의 약 절반 아래 (2026-10-19 줄임) */
+.hero{position:relative;overflow:hidden;color:#fff;background:radial-gradient(120% 90% at 78% 40%,#10306e 0%,#081a40 45%,#040b1d 100%);min-height:clamp(340px,46vh,500px);display:flex;align-items:center}
+.hero .globe{position:absolute;top:-8%;right:2vw;height:150%;width:auto;pointer-events:none}
+.hero .mtn{position:absolute;left:0;bottom:-1px;width:100%;height:42%;pointer-events:none;z-index:1}
+.hero::before{content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(90deg,rgba(4,11,29,.9) 0%,rgba(4,11,29,.55) 40%,rgba(4,11,29,0) 66%)}
+.hero-in{position:relative;z-index:3;width:100%;max-width:1180px;padding-top:28px;padding-bottom:34px}
+.langs{display:flex;gap:6px;margin:0 0 14px}.langs button{font:inherit;font-size:13px;color:#cfe0ff;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:3px 11px;cursor:pointer}
+.langs button:hover{background:rgba(255,255,255,.14)}.langs button.on{background:#fff;color:#0b1a3a;border-color:#fff;font-weight:700}
+.hero-date{font-size:14px;color:#a9c3f0;margin:0;letter-spacing:.02em}
+.hero h1{font:800 clamp(38px,5.6vw,72px)/1.08 "Nanum Myeongjo","AppleMyungjo","Songti SC","STSong","Hiragino Mincho ProN","Yu Mincho","Batang",serif;letter-spacing:-.01em;margin:8px 0 8px;color:#fff;text-shadow:0 2px 18px rgba(0,0,0,.45)}
+.hero h1:lang(zh-CN){font-family:"Songti SC","STSong","SimSun",serif}.hero h1:lang(ja){font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif;font-size:clamp(28px,4.2vw,56px)}
+.hero-en{font:italic 600 clamp(18px,2.2vw,28px)/1.25 Georgia,"Times New Roman",serif;color:#dbeafe;margin:0 0 10px}
+.hero-lead{max-width:540px;color:#c7d6f2;font-size:15px;margin:0 0 18px}
+.hero-row{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px}
+.kingdoms{display:flex;flex-wrap:wrap;gap:8px}
+.kd{display:inline-flex;align-items:center;gap:8px;padding:7px 13px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:#fff;font-weight:600;font-size:14.5px}
+.kd:hover{background:rgba(255,255,255,.16);text-decoration:none}.kd i{width:10px;height:10px;border-radius:50%}
+.kd.korea i{background:#60a5fa}.kd.china i{background:#f87171}.kd.japan i{background:#fbbf24}.kd b{font-weight:500;color:#a9c3f0;font-size:13px}
+.hero-row+.hero-row{margin-top:12px}
+.types{display:flex;flex-wrap:wrap;gap:6px}.tp{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.28);color:#e6eeff;font-size:14px;font-weight:600}
+.tp:hover{background:rgba(255,255,255,.12);text-decoration:none}.tp b{font-weight:500;font-size:12px;color:#a9c3f0}
+.chips .sep{width:1px;align-self:stretch;background:var(--line);margin:2px 4px}
+.hero-cta{display:inline-block;padding:9px 18px;border-radius:10px;background:#fff;color:#0b1a3a;font-weight:700}.hero-cta:hover{text-decoration:none;background:#dbeafe}
+/* 오늘의 핵심 이슈: 홈에서 가장 크게. 1위는 두 칸을 다 씀 */
+.keyiss{scroll-margin-top:96px}.keyiss h2{font-size:26px;border:0;margin:10px 0 4px}.keyiss .note{font-size:13px;color:var(--muted);margin:0 0 14px}
+.iss-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start}.iss-grid .issue{margin:0}.iss-grid .issue h3{font-size:19px}
+@media (max-width:959px){.rows2,.iss-grid{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:700px){header .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}header .chips::-webkit-scrollbar{display:none}header .chip{flex:none}}
-@media (max-width:480px){.wrap{padding:0 14px}.card{padding:12px 13px}header{position:static}.home h2,.issue{scroll-margin-top:8px}.iss>summary{padding:11px 13px 10px 46px}.iss .rank{left:13px}.iss .gist{display:none}.iss .ibody{padding:0 13px 12px}}
+@media (max-width:700px){.hero .globe{height:118%;top:-2%;right:-46vw;opacity:.8}.hero .mtn{height:30%}.hero::before{background:linear-gradient(180deg,rgba(4,11,29,.35),rgba(4,11,29,.75))}.brand em{display:block;margin:0}}
+@media (max-width:480px){.wrap{padding:0 14px}.card{padding:12px 13px}header{position:static}.home h2,.issue,.keyiss{scroll-margin-top:8px}.issue{padding:12px 13px}}
