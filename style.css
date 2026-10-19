@@ -93,27 +93,28 @@ header .wrap,.home .wrap{max-width:1180px}
 .hero .mtn{position:absolute;left:0;bottom:-1px;width:100%;height:42%;pointer-events:none;z-index:1}
 .hero::before{content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(90deg,rgba(4,11,29,.9) 0%,rgba(4,11,29,.55) 40%,rgba(4,11,29,0) 66%)}
 .hero-in{position:relative;z-index:3;width:100%;max-width:1180px;padding-top:28px;padding-bottom:34px}
-.langs{display:flex;gap:6px;margin:0 0 14px}.langs button{font:inherit;font-size:13px;color:#cfe0ff;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:3px 11px;cursor:pointer}
+.hero-top{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin:0 0 14px}
+.hero-links{display:flex;gap:14px;font-size:13.5px;border-left:1px solid rgba(255,255,255,.25);padding-left:14px}.hero-links a{color:#cfe0ff}.hero-links a:hover{color:#fff}
+.langs{display:flex;gap:6px}.langs button{font:inherit;font-size:13px;color:#cfe0ff;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:3px 11px;cursor:pointer}
 .langs button:hover{background:rgba(255,255,255,.14)}.langs button.on{background:#fff;color:#0b1a3a;border-color:#fff;font-weight:700}
 .hero-date{font-size:14px;color:#a9c3f0;margin:0;letter-spacing:.02em}
 .hero h1{font:800 clamp(38px,5.6vw,72px)/1.08 "Nanum Myeongjo","AppleMyungjo","Songti SC","STSong","Hiragino Mincho ProN","Yu Mincho","Batang",serif;letter-spacing:-.01em;margin:8px 0 8px;color:#fff;text-shadow:0 2px 18px rgba(0,0,0,.45)}
 .hero h1:lang(zh-CN){font-family:"Songti SC","STSong","SimSun",serif}.hero h1:lang(ja){font-family:"Hiragino Mincho ProN","Yu Mincho","YuMincho",serif;font-size:clamp(28px,4.2vw,56px)}
 .hero-en{font:italic 600 clamp(18px,2.2vw,28px)/1.25 Georgia,"Times New Roman",serif;color:#dbeafe;margin:0 0 10px}
 .hero-lead{max-width:540px;color:#c7d6f2;font-size:15px;margin:0 0 18px}
-.hero-row{display:flex;flex-wrap:wrap;align-items:center;gap:12px 18px}
+.hero-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
 .kingdoms{display:flex;flex-wrap:wrap;gap:8px}
-.kd{display:inline-flex;align-items:center;gap:8px;padding:7px 13px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:#fff;font-weight:600;font-size:14.5px}
+.kd{display:inline-flex;align-items:center;gap:8px;padding:7px 13px;border-radius:999px;background:rgba(8,20,48,.6);border:1px solid rgba(255,255,255,.2);color:#fff;font-weight:600;font-size:14.5px}
 .kd:hover{background:rgba(255,255,255,.16);text-decoration:none}.kd i{width:10px;height:10px;border-radius:50%}
 .kd.korea i{background:#60a5fa}.kd.china i{background:#f87171}.kd.japan i{background:#fbbf24}.kd b{font-weight:500;color:#a9c3f0;font-size:13px}
-.hero-row+.hero-row{margin-top:12px}
-.types{display:flex;flex-wrap:wrap;gap:6px}.tp{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.28);color:#e6eeff;font-size:14px;font-weight:600}
-.tp:hover{background:rgba(255,255,255,.12);text-decoration:none}.tp b{font-weight:500;font-size:12px;color:#a9c3f0}
+.types{display:flex;flex-wrap:wrap;gap:8px}.tg{display:inline-flex;border:1px solid rgba(255,255,255,.28);border-radius:10px;overflow:hidden;background:rgba(255,255,255,.05)}
+.tp{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;color:#e6eeff;font-size:14px;font-weight:600}.tp+.tp{border-left:1px solid rgba(255,255,255,.2)}
+.tp:hover{background:rgba(255,255,255,.14);text-decoration:none}.tp b{font-weight:500;font-size:12px;color:#a9c3f0}
 .chips .sep{width:1px;align-self:stretch;background:var(--line);margin:2px 4px}
-.hero-cta{display:inline-block;padding:9px 18px;border-radius:10px;background:#fff;color:#0b1a3a;font-weight:700}.hero-cta:hover{text-decoration:none;background:#dbeafe}
 /* 오늘의 핵심 이슈: 홈에서 가장 크게. 1위는 두 칸을 다 씀 */
 .keyiss{scroll-margin-top:96px}.keyiss h2{font-size:26px;border:0;margin:10px 0 4px}.keyiss .note{font-size:13px;color:var(--muted);margin:0 0 14px}
 .iss-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;align-items:start}.iss-grid .issue{margin:0}.iss-grid .issue h3{font-size:19px}
 @media (max-width:959px){.rows2,.iss-grid{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:700px){header .chips{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}header .chips::-webkit-scrollbar{display:none}header .chip{flex:none}}
 @media (max-width:700px){.hero .globe{height:118%;top:-2%;right:-46vw;opacity:.8}.hero .mtn{height:30%}.hero::before{background:linear-gradient(180deg,rgba(4,11,29,.35),rgba(4,11,29,.75))}.brand em{display:block;margin:0}}
-@media (max-width:480px){.wrap{padding:0 14px}.card{padding:12px 13px}header{position:static}.home h2,.issue,.keyiss{scroll-margin-top:8px}.issue{padding:12px 13px}}
+@media (max-width:480px){.wrap{padding-left:14px;padding-right:14px}.card{padding:12px 13px}header{position:static}.home h2,.issue,.keyiss{scroll-margin-top:8px}.issue{padding:12px 13px}}
