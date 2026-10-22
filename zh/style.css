@@ -66,7 +66,7 @@ font:700 17px "Kaiti SC","STKaiti","KaiTi",serif;box-shadow:inset 0 0 0 2px rgba
 .hotlist li:last-child{border-bottom:0}.hotlist b{flex:none;width:22px;height:22px;border-radius:3px;background:#e9e3d8;color:var(--muted);display:inline-flex;
 align-items:center;justify-content:center;font-size:12.5px}.hotlist li:nth-child(1) b{background:var(--red);color:#fff}
 .hotlist li:nth-child(2) b{background:#e8590c;color:#fff}.hotlist li:nth-child(3) b{background:var(--gold);color:#fff}.hotlist em{font-style:normal;color:var(--muted);font-size:12px;margin-left:4px}
-/* 三国战报 */
+/* 三国报告 */
 .war{display:grid;gap:8px}.war a{display:grid;grid-template-columns:128px 1fr 30px;align-items:center;gap:8px;font-size:14px}
 .war .b{height:10px;border-radius:5px;background:#eee7da;overflow:hidden}.war .b i{display:block;height:100%}.war em{font-style:normal;text-align:right;font-weight:700}
 .tchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}.tchips a{border:1px solid var(--line);border-radius:4px;padding:2px 9px;font-size:13px;background:#fbf8f2}
