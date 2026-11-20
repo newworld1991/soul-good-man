@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0f1c">
+<title>B♭ 트럼펫 튜너</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* 레이아웃: 한 화면 고정. 가운데에 음이름을 최대 크기로, 그 아래 센트 게이지.
+   상태(낮음/정확/높음)는 글자색과 화면 테두리 색으로 동시에 표시해 멀리서도 구분된다. */
+:root {
+  color-scheme: dark;
+  --ink: #0a0f1c;
+  --panel: #141b2e;
+  --line: #2a3552;
+  --text: #f3f1ea;
+  --muted: #94a0bd;
+  --brass: #f2b632;
+  --ok: #3ddc97;
+  --flat: #5aa9ff;
+  --sharp: #ff7a59;
+  --state: var(--muted);
+  --display: "Barlow Condensed", "Arial Narrow", "Apple SD Gothic Neo", sans-serif;
+  --body: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body {
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--body);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: calc(env(safe-area-inset-top) + 10px) calc(env(safe-area-inset-right) + 16px)
+           calc(env(safe-area-inset-bottom) + 12px) calc(env(safe-area-inset-left) + 16px);
+  overflow: hidden;
+  -webkit-user-select: none; user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: inset 0 0 0 0 var(--state);
+  transition: box-shadow .15s linear;
+}
+body[data-state="flat"]  { --state: var(--flat); }
+body[data-state="ok"]    { --state: var(--ok); }
+body[data-state="sharp"] { --state: var(--sharp); }
+body[data-state="flat"], body[data-state="ok"], body[data-state="sharp"] {
+  box-shadow: inset 0 0 0 8px var(--state);
+}
+
+/* 상단 설정 */
+.bar { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.brand { font-size: .8rem; letter-spacing: .14em; color: var(--brass); font-weight: 700; white-space: nowrap; }
+.controls { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip, .stepper {
+  min-height: 44px; border: 1px solid var(--line); background: var(--panel); color: var(--text);
+  border-radius: 12px; font: inherit; font-size: .9rem;
+}
+.chip { padding: 0 14px; cursor: pointer; }
+.chip[aria-pressed="true"] { border-color: var(--brass); color: var(--brass); }
+.stepper { display: flex; align-items: center; overflow: hidden; }
+.stepper button {
+  width: 40px; height: 44px; border: 0; background: transparent; color: var(--text);
+  font-size: 1.3rem; cursor: pointer;
+}
+.stepper output { min-width: 4.6em; text-align: center; font-variant-numeric: tabular-nums; }
+button:focus-visible, select:focus-visible, summary:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+
+/* 가운데 표시부 */
+.stage { flex: 1; min-height: 0; display: flex; flex-direction: column; justify-content: center; gap: 2vh; }
+.readout { text-align: center; min-width: 0; }
+.note {
+  font-family: var(--display); font-weight: 700; line-height: .82;
+  font-size: clamp(7rem, min(50vw, 34vh), 24rem);
+  color: var(--state);
+  display: inline-flex; align-items: flex-start; justify-content: center;
+  font-variant-numeric: tabular-nums;
+}
+.note .acc { font-family: var(--body); font-size: .42em; line-height: 1; margin-top: .1em; min-width: .55em; text-align: left; }
+.note .oct { font-size: .3em; line-height: 1; align-self: flex-end; margin-bottom: .16em; color: var(--muted); min-width: .5em; text-align: left; }
+.sub { margin-top: 1.2vh; color: var(--muted); font-size: clamp(.95rem, 2.6vh, 1.4rem); font-variant-numeric: tabular-nums; }
+
+.gauge { min-width: 0; }
+.verdict-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+.verdict { font-size: clamp(1.6rem, 5.2vh, 3rem); font-weight: 800; color: var(--state); }
+.cents { font-family: var(--display); font-weight: 700; font-size: clamp(2.2rem, 7vh, 4.2rem); line-height: 1; color: var(--text); font-variant-numeric: tabular-nums; }
+.cents small { font-size: .4em; color: var(--muted); margin-left: .25em; font-family: var(--body); font-weight: 400; }
+.track {
+  position: relative; height: clamp(46px, 8vh, 76px); border-radius: 14px;
+  background: var(--panel); border: 1px solid var(--line); overflow: hidden;
+}
+.zone { position: absolute; top: 0; bottom: 0; left: 45%; width: 10%; background: color-mix(in srgb, var(--ok) 22%, transparent); }
+.tick { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--line); }
+.needle {
+  position: absolute; top: 4px; bottom: 4px; left: 50%; width: 10px; margin-left: -5px; border-radius: 5px;
+  background: var(--state); transition: left .09s linear; opacity: .35;
+}
+body[data-state="flat"] .needle, body[data-state="ok"] .needle, body[data-state="sharp"] .needle { opacity: 1; }
+.scale { display: flex; justify-content: space-between; margin-top: 6px; color: var(--muted); font-size: .85rem; font-variant-numeric: tabular-nums; }
+
+/* 하단 */
+.foot { display: flex; flex-direction: column; gap: 8px; }
+.go {
+  min-height: 60px; border: 0; border-radius: 16px; font: inherit; font-size: 1.25rem; font-weight: 800;
+  background: var(--brass); color: #1a1405; cursor: pointer;
+}
+.go[data-on="true"] { background: var(--panel); color: var(--text); border: 1px solid var(--line); }
+.level { height: 6px; border-radius: 3px; background: var(--panel); overflow: hidden; }
+.level i { display: block; height: 100%; width: 0; background: var(--brass); }
+.msg { margin: 0; min-height: 1.3em; font-size: .92rem; color: var(--sharp); }
+.msg:empty { display: none; }
+details { font-size: .85rem; color: var(--muted); }
+summary { cursor: pointer; padding: 6px 0; }
+details dl { margin: 6px 0 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; }
+details dt { color: var(--muted); } details dd { margin: 0; color: var(--text); word-break: break-all; }
+select { min-height: 40px; max-width: 100%; background: var(--panel); color: var(--text); border: 1px solid var(--line); border-radius: 10px; font: inherit; padding: 0 8px; }
+
+/* 폰을 가로로 눕혔을 때: 음이름 왼쪽, 게이지 오른쪽 */
+@media (orientation: landscape) and (max-height: 540px) {
+  body { gap: 6px; }
+  .stage { flex-direction: row; align-items: center; gap: 4vw; }
+  .readout { flex: 0 0 44%; }
+  .gauge { flex: 1; }
+  .note { font-size: clamp(6rem, min(26vw, 58vh), 20rem); }
+  .foot { flex-direction: row; align-items: center; flex-wrap: wrap; }
+  .go { min-height: 48px; padding: 0 28px; font-size: 1.05rem; }
+  .level { flex: 1; min-width: 80px; }
+  .msg, details { flex-basis: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { .needle, body { transition: none; } }
+</style>
+</head>
+<body data-state="idle">
+
+<header class="bar">
+  <div class="brand">B♭ TRUMPET TUNER</div>
+  <div class="controls">
+    <div class="stepper" role="group" aria-label="기준음 A4">
+      <button type="button" id="a4down" aria-label="기준음 1Hz 내리기">−</button>
+      <output id="a4out">A 440</output>
+      <button type="button" id="a4up" aria-label="기준음 1Hz 올리기">+</button>
+    </div>
+    <button type="button" class="chip" id="modeBtn" aria-pressed="true">기보음</button>
+    <button type="button" class="chip" id="voiceBtn" aria-pressed="false">음성 끔</button>
+  </div>
+</header>
+
+<main class="stage">
+  <div class="readout">
+    <div class="note" aria-live="off">
+      <span id="noteLetter">–</span><span class="acc" id="noteAcc"></span><span class="oct" id="noteOct"></span>
+    </div>
+    <div class="sub" id="sub">시작을 누르고 한 음을 길게 불어주세요</div>
+  </div>
+
+  <div class="gauge">
+    <div class="verdict-row">
+      <div class="verdict" id="verdict">대기</div>
+      <div class="cents"><span id="cents">0</span><small>cents</small></div>
+    </div>
+    <div class="track" aria-hidden="true">
+      <div class="zone"></div>
+      <div class="tick" style="left:25%"></div>
+      <div class="tick" style="left:50%"></div>
+      <div class="tick" style="left:75%"></div>
+      <div class="needle" id="needle"></div>
+    </div>
+    <div class="scale"><span>낮음 −50</span><span>0</span><span>+50 높음</span></div>
+  </div>
+</main>
+
+<footer class="foot">
+  <button type="button" class="go" id="goBtn" data-on="false">튜너 시작</button>
+  <div class="level" aria-hidden="true"><i id="levelBar"></i></div>
+  <p class="msg" id="msg" role="alert"></p>
+  <details id="diag">
+    <summary>마이크 선택 · 진단</summary>
+    <p><label for="micSel">사용할 마이크 </label><select id="micSel"><option value="">기본 마이크</option></select></p>
+    <dl>
+      <dt>현재 주소</dt><dd id="dHost"></dd>
+      <dt>보안 연결</dt><dd id="dSecure"></dd>
+      <dt>마이크 API</dt><dd id="dApi"></dd>
+      <dt>다른 페이지 안에 끼워짐</dt><dd id="dFrame"></dd>
+      <dt>샘플레이트</dt><dd id="dRate">–</dd>
+      <dt>마지막 오류</dt><dd id="dErr">없음</dd>
+    </dl>
+  </details>
+</footer>
+
+<script>
+/*DETECT-START*/
+// 정규화 자기상관(McLeod 방식)으로 기본 주파수를 찾는다. 배음이 강한 금관에서도 옥타브 오인식이 적다.
+function detectPitch(buf, sampleRate) {
+  var n = buf.length, i, tau, rms = 0;
+  for (i = 0; i < n; i++) rms += buf[i] * buf[i];
+  rms = Math.sqrt(rms / n);
+  if (rms < 0.006) return { freq: 0, clarity: 0, rms: rms };
+
+  var minTau = Math.floor(sampleRate / 1600);
+  var maxTau = Math.min(Math.ceil(sampleRate / 65), n >> 1);
+  var w = n - maxTau;
+  var nsdf = new Float32Array(maxTau + 1);
+  for (tau = 0; tau <= maxTau; tau++) {
+    var acf = 0, m = 0;
+    for (i = 0; i < w; i++) { var a = buf[i], b = buf[i + tau]; acf += a * b; m += a * a + b * b; }
+    nsdf[tau] = m > 0 ? 2 * acf / m : 0;
+  }
+
+  // tau=0 주변의 첫 양수 구간을 건너뛴 뒤, 양수 구간마다 최댓값을 모은다.
+  tau = 1;
+  while (tau <= maxTau && nsdf[tau] > 0) tau++;
+  var peaks = [], best = 0;
+  while (tau <= maxTau) {
+    while (tau <= maxTau && nsdf[tau] <= 0) tau++;
+    var pk = -1, pv = 0;
+    while (tau <= maxTau && nsdf[tau] > 0) { if (nsdf[tau] > pv) { pv = nsdf[tau]; pk = tau; } tau++; }
+    if (pk >= minTau && pk < maxTau) { peaks.push(pk); if (pv > best) best = pv; }
+  }
+  if (!peaks.length) return { freq: 0, clarity: 0, rms: rms };
+
+  var chosen = peaks[0];
+  for (i = 0; i < peaks.length; i++) { if (nsdf[peaks[i]] >= 0.9 * best) { chosen = peaks[i]; break; } }
+  var y0 = nsdf[chosen - 1], y1 = nsdf[chosen], y2 = nsdf[chosen + 1];
+  var d = y0 - 2 * y1 + y2;
+  var shift = d !== 0 ? 0.5 * (y0 - y2) / d : 0;
+  return { freq: sampleRate / (chosen + shift), clarity: y1, rms: rms };
+}
+/*DETECT-END*/
+
+(function () {
+  var LETTER = ['C','C','D','E','E','F','F','G','A','A','B','B'];
+  var ACC    = ['','♯','','♭','','','♯','','♭','','♭',''];
+  var SAY    = ['도','도 샵','레','미 플랫','미','파','파 샵','솔','라 플랫','라','시 플랫','시'];
+  var IN_TUNE = 5;          // ±5센트 안이면 정확
+  var $ = function (id) { return document.getElementById(id); };
+
+  var a4 = 440, written = true, voice = false;
+  var ctx = null, stream = null, analyser = null, buf = null, raf = 0, wake = null, running = false;
+  var hist = [], lastHeard = 0, lastAnalysis = 0;
+  var stableNote = null, stableSince = 0, spokenKey = '', spokenAt = 0;
+
+  try {
+    var s = JSON.parse(localStorage.getItem('tpTuner') || '{}');
+    if (s.a4 >= 430 && s.a4 <= 450) a4 = s.a4;
+    if (typeof s.written === 'boolean') written = s.written;
+  } catch (e) {}
+  function save() { try { localStorage.setItem('tpTuner', JSON.stringify({ a4: a4, written: written })); } catch (e) {} }
+
+  var inFrame = false;
+  try { inFrame = window.self !== window.top; } catch (e) { inFrame = true; }
+  var hasApi = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
+  $('dHost').textContent = location.protocol + '//' + (location.host || '(파일)');
+  $('dSecure').textContent = window.isSecureContext ? '예' : '아니오';
+  $('dApi').textContent = hasApi ? '예' : '아니오';
+  $('dFrame').textContent = inFrame ? '예 (마이크가 막힐 수 있음)' : '아니오';
+
+  function paintSettings() {
+    $('a4out').textContent = 'A ' + a4;
+    $('modeBtn').textContent = written ? '기보음' : '실음';
+    $('modeBtn').setAttribute('aria-pressed', String(written));
+    $('voiceBtn').textContent = voice ? '음성 켬' : '음성 끔';
+    $('voiceBtn').setAttribute('aria-pressed', String(voice));
+  }
+  paintSettings();
+
+  $('a4down').onclick = function () { if (a4 > 430) { a4--; hist = []; save(); paintSettings(); } };
+  $('a4up').onclick   = function () { if (a4 < 450) { a4++; hist = []; save(); paintSettings(); } };
+  $('modeBtn').onclick = function () { written = !written; save(); paintSettings(); };
+  $('voiceBtn').onclick = function () {
+    voice = !voice; paintSettings();
+    if (!('speechSynthesis' in window)) { voice = false; paintSettings(); say('이 브라우저는 음성 안내를 지원하지 않습니다.'); return; }
+    if (voice) speak('음성 안내 켬');   // 탭 안에서 한 번 말해 두어야 iOS에서 이후 안내가 나온다
+    else speechSynthesis.cancel();
+  };
+
+  function say(text) { $('msg').textContent = text || ''; }
+  function setState(st) { document.body.setAttribute('data-state', st); }
+
+  function speak(text) {
+    try {
+      var u = new SpeechSynthesisUtterance(text);
+      u.lang = 'ko-KR'; u.rate = 1.1;
+      speechSynthesis.speak(u);
+    } catch (e) {}
+  }
+
+  function median(arr) {
+    var a = arr.slice().sort(function (x, y) { return x - y; });
+    return a[a.length >> 1];
+  }
+
+  function showPitch(freq, now) {
+    var m = 69 + 12 * Math.log(freq / a4) / Math.LN2;
+    if (hist.length && Math.abs(m - median(hist)) > 0.8) hist = [];
+    hist.push(m); if (hist.length > 5) hist.shift();
+    var mm = median(hist);
+    var nearest = Math.round(mm);
+    var cents = (mm - nearest) * 100;
+    var shown = nearest + (written ? 2 : 0);
+    var pc = ((shown % 12) + 12) % 12;
+    var cpc = ((nearest % 12) + 12) % 12;
+
+    $('noteLetter').textContent = LETTER[pc];
+    $('noteAcc').textContent = ACC[pc];
+    $('noteOct').textContent = Math.floor(shown / 12) - 1;
+    var concert = LETTER[cpc] + ACC[cpc] + (Math.floor(nearest / 12) - 1);
+    $('sub').textContent = (written ? '실음 ' + concert + ' · ' : '') + freq.toFixed(1) + ' Hz';
+
+    var r = Math.round(cents);
+    $('cents').textContent = (r > 0 ? '+' : r < 0 ? '−' : '') + Math.abs(r);
+    $('needle').style.left = (50 + Math.max(-50, Math.min(50, cents))) + '%';
+    var st = Math.abs(cents) <= IN_TUNE ? 'ok' : cents < 0 ? 'flat' : 'sharp';
+    setState(st);
+    $('verdict').textContent = st === 'ok' ? '정확' : st === 'flat' ? '낮음' : '높음';
+
+    if (stableNote !== nearest) { stableNote = nearest; stableSince = now; }
+    if (voice && now - stableSince > 800 && now - spokenAt > 2500) {
+      var key = nearest + st;
+      if (key !== spokenKey) {
+        spokenKey = key; spokenAt = now;
+        speak(SAY[pc] + ', ' + (st === 'ok' ? '정확' : st === 'flat' ? '낮아요' : '높아요'));
+      }
+    }
+  }
+
+  function loop(now) {
+    if (!running) return;
+    raf = requestAnimationFrame(loop);
+    if (now - lastAnalysis < 45) return;
+    lastAnalysis = now;
+    // 음성 안내가 나오는 동안은 그 소리를 음정으로 잡지 않도록 분석을 쉰다.
+    if (voice && window.speechSynthesis && speechSynthesis.speaking) return;
+
+    analyser.getFloatTimeDomainData(buf);
+    var p = detectPitch(buf, ctx.sampleRate);
+    $('levelBar').style.width = Math.min(100, Math.round(p.rms * 400)) + '%';
+
+    if (p.freq > 60 && p.freq < 1600 && p.clarity > 0.88) {
+      lastHeard = now;
+      showPitch(p.freq, now);
+    } else if (now - lastHeard > 450) {
+      setState('listening');
+      $('verdict').textContent = '소리 대기';
+      hist = []; stableNote = null; spokenKey = '';
+    }
+  }
+
+  function explain(err) {
+    var name = err && err.name ? err.name : String(err);
+    $('dErr').textContent = name + (err && err.message ? ' · ' + err.message : '');
+    if (name === 'NotAllowedError' || name === 'SecurityError') {
+      return inFrame
+        ? '이 페이지가 다른 페이지 안에 끼워져 있어 마이크가 막혔습니다. 이 파일의 주소를 Safari에서 직접 여세요.'
+        : '마이크가 거부됐습니다. 주소창의 웹사이트 설정에서 마이크를 허용으로 바꾼 뒤 다시 누르세요.';
+    }
+    if (name === 'NotFoundError' || name === 'OverconstrainedError') return '마이크를 찾지 못했습니다. 아래 진단에서 다른 마이크를 고르거나 블루투스 연결을 확인하세요.';
+    if (name === 'NotReadableError') return '다른 앱이 마이크를 쓰고 있습니다. 그 앱을 닫고 다시 누르세요.';
+    return '마이크를 시작하지 못했습니다 (' + name + ').';
+  }
+
+  function fillMics() {
+    if (!navigator.mediaDevices.enumerateDevices) return;
+    navigator.mediaDevices.enumerateDevices().then(function (list) {
+      var sel = $('micSel'), cur = sel.value;
+      sel.length = 1;
+      list.forEach(function (d) {
+        if (d.kind !== 'audioinput') return;
+        var o = document.createElement('option');
+        o.value = d.deviceId; o.textContent = d.label || '마이크';
+        sel.appendChild(o);
+      });
+      sel.value = cur;
+    }).catch(function () {});
+  }
+
+  function requestWake() {
+    if (!('wakeLock' in navigator)) return;
+    navigator.wakeLock.request('screen').then(function (w) { wake = w; }).catch(function () {});
+  }
+
+  function start() {
+    say('');
+    if (!window.isSecureContext) { say('https 주소가 아니어서 마이크를 쓸 수 없습니다. https 주소로 여세요.'); return; }
+    if (!hasApi) { say('이 브라우저는 마이크를 지원하지 않습니다. Safari나 Chrome에서 직접 여세요.'); return; }
+
+    var AC = window.AudioContext || window.webkitAudioContext;
+    ctx = new AC();              // 탭 직후에 만들어야 iOS에서 오디오가 깨어난다
+    var audio = { echoCancellation: false, noiseSuppression: false, autoGainControl: false };
+    var id = $('micSel').value;
+    if (id) audio.deviceId = { exact: id };
+
+    navigator.mediaDevices.getUserMedia({ audio: audio, video: false }).then(function (st) {
+      stream = st;
+      if (ctx.state === 'suspended') ctx.resume();
+      analyser = ctx.createAnalyser();
+      analyser.fftSize = 4096;
+      analyser.smoothingTimeConstant = 0;
+      buf = new Float32Array(analyser.fftSize);
+      var src = ctx.createMediaStreamSource(stream);
+      var mute = ctx.createGain(); mute.gain.value = 0;
+      src.connect(analyser); analyser.connect(mute); mute.connect(ctx.destination);
+
+      running = true; hist = []; lastHeard = 0;
+      $('goBtn').textContent = '튜너 정지'; $('goBtn').setAttribute('data-on', 'true');
+      $('dRate').textContent = ctx.sampleRate + ' Hz';
+      $('dErr').textContent = '없음';
+      setState('listening'); $('verdict').textContent = '소리 대기';
+      $('sub').textContent = '한 음을 길게 불어주세요';
+      fillMics(); requestWake();
+      raf = requestAnimationFrame(loop);
+    }).catch(function (err) {
+      say(explain(err));
+      try { ctx.close(); } catch (e) {}
+      ctx = null;
+    });
+  }
+
+  function stop() {
+    running = false; cancelAnimationFrame(raf);
+    if (stream) stream.getTracks().forEach(function (t) { t.stop(); });
+    if (ctx) { try { ctx.close(); } catch (e) {} }
+    if (wake) { try { wake.release(); } catch (e) {} }
+    if (window.speechSynthesis) speechSynthesis.cancel();
+    stream = ctx = analyser = wake = null;
+    $('goBtn').textContent = '튜너 시작'; $('goBtn').setAttribute('data-on', 'false');
+    $('levelBar').style.width = '0';
+    setState('idle'); $('verdict').textContent = '대기';
+  }
+
+  $('goBtn').onclick = function () { if (running) stop(); else start(); };
+  $('micSel').onchange = function () { if (running) { stop(); start(); } };
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible' && running) {
+      requestWake();
+      if (ctx && ctx.state === 'suspended') ctx.resume();
+    }
+  });
+})();
+</script>
+</body>
+</html>
