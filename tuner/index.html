@@ -84,15 +84,15 @@ button:focus-visible, select:focus-visible, .handle:focus-visible { outline: 2px
 .round svg { width: 18px; height: 18px; stroke: var(--label); fill: none; stroke-width: 1.8; stroke-linecap: round; }
 
 /* 가운데 */
-.stage { flex: 1 0 auto; display: flex; flex-direction: column; justify-content: center; gap: 3vh; }
+.stage { flex: 1 0 auto; display: flex; flex-direction: column; justify-content: center; gap: 2vh; }
 .readout { text-align: center; min-width: 0; }
 .note {
   font-weight: 700; line-height: 1; letter-spacing: -.04em;
-  font-size: clamp(6rem, min(54vw, 30vh), 24rem);
+  font-size: clamp(6rem, min(54vw, 25vh), 24rem);
   color: var(--state); transition: color .18s ease;
   display: inline-flex; align-items: flex-start; justify-content: center;
 }
-.note.ko { font-size: calc(clamp(6rem, min(54vw, 30vh), 24rem) * .8); letter-spacing: -.02em; }
+.note.ko { font-size: calc(clamp(6rem, min(54vw, 25vh), 24rem) * .8); letter-spacing: -.02em; }
 .note .acc { font-size: .4em; font-weight: 600; margin-top: .12em; min-width: .5em; text-align: left; letter-spacing: 0; }
 .note .oct { font-family: var(--num); font-size: .26em; font-weight: 600; align-self: flex-end; margin-bottom: .2em; min-width: .5em; text-align: left; color: var(--label2); letter-spacing: 0; }
 .note .acc:empty { display: none; }
@@ -104,7 +104,7 @@ body[data-state="idle"] .verdict { color: var(--label2); }
 .gauge { min-width: 0; }
 .cents { text-align: center; font-family: var(--num); font-size: 28px; font-weight: 600; font-variant-numeric: tabular-nums; }
 .cents small { font-family: var(--font); font-size: 13px; font-weight: 400; color: var(--label2); margin-left: 4px; }
-.meter { position: relative; height: 52px; margin: 6px 3px 0; }
+.meter { position: relative; height: 46px; margin: 4px 3px 0; }
 .meter b { position: absolute; bottom: 8px; width: 1.5px; margin-left: -.75px; border-radius: 1px; background: var(--label3); height: 12px; }
 .meter b.mid { height: 20px; background: var(--label2); }
 .meter b.zero { height: 32px; width: 2px; margin-left: -1px; background: var(--label); }
@@ -143,6 +143,29 @@ body[data-state="flat"] .needle, body[data-state="ok"] .needle, body[data-state=
 .recbtn[data-on="true"] i { width: 24px; height: 24px; border-radius: 6px; }
 .msg { margin: 0; font-size: 13px; color: var(--red); }
 .msg:empty { display: none; }
+
+/* 메트로놈 */
+.metro { padding: 10px 14px 12px; display: flex; flex-direction: column; gap: 6px; }
+.mrow { display: flex; align-items: center; gap: 12px; }
+.metro .play { width: 44px; height: 44px; }
+.metro .play svg { width: 16px; height: 16px; }
+.metro .play[data-on="true"] { background: var(--label); }
+.metro .play[data-on="true"] svg { fill: var(--bg); }
+.bpm { font-family: var(--num); font-size: 30px; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; min-width: 2.2em; }
+.bpm small { font-family: var(--font); font-size: 12px; font-weight: 400; color: var(--label2); margin-left: 4px; }
+.dots { margin-left: auto; display: flex; gap: 8px; }
+.dots i { width: 12px; height: 12px; border-radius: 50%; background: var(--fill); transition: transform .12s ease; }
+.dots i.on { background: var(--label2); transform: scale(1.25); }
+.dots i.on.first { background: var(--label); }
+.mini { width: 36px; height: 36px; flex: none; border: 0; border-radius: 50%; background: var(--fill); font-size: 20px; line-height: 1; padding: 0; touch-action: manipulation; }
+input[type="range"] {
+  -webkit-appearance: none; appearance: none; flex: 1; min-width: 0; height: 28px; margin: 0; background: transparent; --p: 24%;
+}
+input[type="range"]::-webkit-slider-runnable-track { height: 4px; border-radius: 2px; background: linear-gradient(to right, var(--label2) var(--p), var(--fill) var(--p)); }
+input[type="range"]::-moz-range-track { height: 4px; border-radius: 2px; background: var(--fill); }
+input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 26px; height: 26px; margin-top: -11px; border-radius: 50%; background: #fff; border: 0; box-shadow: 0 1px 4px rgba(0, 0, 0, .3), 0 0 0 .5px rgba(0, 0, 0, .08); }
+input[type="range"]::-moz-range-thumb { width: 26px; height: 26px; border-radius: 50%; background: #fff; border: 0; box-shadow: 0 1px 4px rgba(0, 0, 0, .3); }
+input[type="range"]:focus-visible { outline: 2px solid var(--tint); outline-offset: 2px; }
 
 /* 공용: 묶음 목록, 분절 버튼, 스테퍼, 스위치 */
 .group { background: var(--card); border-radius: 14px; overflow: hidden; }
@@ -217,13 +240,13 @@ select { max-width: 60%; min-height: 34px; border: 0; background: transparent; c
   .note { font-size: clamp(5rem, min(24vw, 44vh), 20rem); }
   .note.ko { font-size: calc(clamp(5rem, min(24vw, 44vh), 20rem) * .8); }
   .foot { flex-direction: row; align-items: center; flex-wrap: wrap; }
-  .level, .msg { flex-basis: 100%; }
+  .level, .msg, .metro { flex-basis: 100%; }
   .cell { flex: 1 1 220px; width: auto; }
   .actions { flex: 1 1 260px; }
   .primary { height: 48px; } .recbtn { width: 52px; height: 52px; } .recbtn i { width: 38px; height: 38px; }
   .graph-wrap { min-height: 140px; }
 }
-@media (prefers-reduced-motion: reduce) { .needle, .note, .verdict, .recbtn i, .switch, .switch::after { transition: none; } .sheet { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .needle, .note, .verdict, .recbtn i, .switch, .switch::after, .dots i { transition: none; } .sheet { animation: none; } }
 </style>
 </head>
 <body data-state="idle">
@@ -265,6 +288,20 @@ select { max-width: 60%; min-height: 34px; border: 0; background: transparent; c
     <button type="button" class="primary" id="goBtn" data-on="false">튜너 시작</button>
     <button type="button" class="recbtn" id="recBtn" data-on="false" aria-label="녹음 시작"><i></i></button>
   </div>
+  <section class="group metro" aria-label="메트로놈">
+    <div class="mrow">
+      <button type="button" class="play" id="mPlay" data-on="false" aria-label="메트로놈 시작">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path id="mIcon" d="M6 3.5v13l11-6.5z"/></svg>
+      </button>
+      <div class="bpm"><span id="bpmOut">80</span><small>BPM</small></div>
+      <div class="dots" id="mDots" aria-hidden="true"></div>
+    </div>
+    <div class="mrow">
+      <button type="button" class="mini" id="bpmDown" aria-label="1 느리게">−</button>
+      <input type="range" id="bpmRange" min="40" max="208" step="1" value="80" aria-label="빠르기">
+      <button type="button" class="mini" id="bpmUp" aria-label="1 빠르게">+</button>
+    </div>
+  </section>
 </footer>
 
 <!-- 설정 -->
@@ -298,6 +335,15 @@ select { max-width: 60%; min-height: 34px; border: 0; background: transparent; c
       <div class="row"><span id="voiceLab">음성 안내</span><button type="button" class="switch" id="voiceBtn" role="switch" aria-checked="false" aria-labelledby="voiceLab"></button></div>
     </div>
     <p class="note-text">음을 길게 불면 연결된 글래스나 이어폰으로 음이름과 높낮이를 읽어 줍니다.</p>
+
+    <div class="head">메트로놈</div>
+    <div class="group">
+      <div class="row"><span>박자</span>
+        <div class="seg" id="segBeats" role="group" aria-label="한 마디 박 수"><button type="button" data-v="2" style="min-width:44px">2</button><button type="button" data-v="3" style="min-width:44px">3</button><button type="button" data-v="4" style="min-width:44px">4</button><button type="button" data-v="6" style="min-width:44px">6</button></div>
+      </div>
+      <div class="row"><span id="mSoundLab">소리</span><button type="button" class="switch" id="mSoundBtn" role="switch" aria-checked="true" aria-labelledby="mSoundLab"></button></div>
+    </div>
+    <p class="note-text">소리를 끄면 점만 깜빡입니다. 촬영 중 소리가 녹음되지 않게 할 때 쓰세요.</p>
 
     <div class="head">마이크</div>
     <div class="group">
@@ -425,6 +471,7 @@ function wavBlob(pcm, rate, startSec, endSec) {
   var $ = function (id) { return document.getElementById(id); };
 
   var a4 = 440, written = true, solfege = true, voice = false;
+  var bpm = 80, beats = 4, mSound = true;
   var ctx = null, stream = null, analyser = null, proc = null, buf = null, raf = 0, wake = null, running = false;
   var hist = [], lastHeard = 0, lastAnalysis = 0;
   var stableNote = null, stableSince = 0, spokenKey = '', spokenAt = 0;
@@ -439,8 +486,11 @@ function wavBlob(pcm, rate, startSec, endSec) {
     if (s.a4 >= 430 && s.a4 <= 450) a4 = s.a4;
     if (typeof s.written === 'boolean') written = s.written;
     if (typeof s.solfege === 'boolean') solfege = s.solfege;
+    if (s.bpm >= 40 && s.bpm <= 208) bpm = Math.round(s.bpm);
+    if (s.beats === 2 || s.beats === 3 || s.beats === 4 || s.beats === 6) beats = s.beats;
+    if (typeof s.mSound === 'boolean') mSound = s.mSound;
   } catch (e) {}
-  function save() { try { localStorage.setItem('tpTuner', JSON.stringify({ a4: a4, written: written, solfege: solfege })); } catch (e) {} }
+  function save() { try { localStorage.setItem('tpTuner', JSON.stringify({ a4: a4, written: written, solfege: solfege, bpm: bpm, beats: beats, mSound: mSound })); } catch (e) {} }
 
   var inFrame = false;
   try { inFrame = window.self !== window.top; } catch (e) { inFrame = true; }
@@ -938,6 +988,96 @@ function wavBlob(pcm, rate, startSec, endSec) {
     var mq = window.matchMedia('(prefers-color-scheme: dark)'), redraw = function () { if (!$('detail').hidden) drawTake(); };
     if (mq.addEventListener) mq.addEventListener('change', redraw); else if (mq.addListener) mq.addListener(redraw);
   }
+
+  /* ---------- 메트로놈 ---------- */
+  // 소리는 음높이가 없는 짧은 잡음 틱이라 튜너가 음으로 잡지 않는다. 박은 오디오 시계에 맞춰 미리 예약한다.
+  var mctx = null, mOn = false, mTimer = 0, mNext = 0, mBeat = 0, mQueue = [], mNoise = null;
+
+  function paintMetro() {
+    $('bpmOut').textContent = bpm;
+    $('bpmRange').value = bpm;
+    $('bpmRange').style.setProperty('--p', ((bpm - 40) / 168 * 100) + '%');
+    paintSeg('segBeats', String(beats));
+    $('mSoundBtn').setAttribute('aria-checked', String(mSound));
+    var d = $('mDots');
+    if (d.children.length !== beats) {
+      d.innerHTML = '';
+      for (var i = 0; i < beats; i++) d.appendChild(document.createElement('i'));
+    }
+  }
+  function setBpm(v) { bpm = Math.max(40, Math.min(208, Math.round(v))); save(); paintMetro(); }
+
+  function mClick(t, accent) {
+    if (!mSound) return;
+    var src = mctx.createBufferSource(), f = mctx.createBiquadFilter(), g = mctx.createGain();
+    src.buffer = mNoise;
+    f.type = 'bandpass'; f.frequency.value = accent ? 1900 : 3400; f.Q.value = 0.8;
+    g.gain.setValueAtTime(accent ? 1 : 0.5, t);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.035);
+    src.connect(f); f.connect(g); g.connect(mctx.destination);
+    src.start(t); src.stop(t + 0.045);
+  }
+  function mSchedule() {
+    while (mNext < mctx.currentTime + 0.12) {
+      mClick(mNext, mBeat === 0);
+      mQueue.push({ t: mNext, b: mBeat });
+      mNext += 60 / bpm;
+      mBeat = (mBeat + 1) % beats;
+    }
+  }
+  function mDraw() {
+    if (!mOn) return;
+    var now = mctx.currentTime, cur = -1;
+    while (mQueue.length && mQueue[0].t <= now) cur = mQueue.shift().b;
+    if (cur >= 0) {
+      var ds = $('mDots').children;
+      for (var i = 0; i < ds.length; i++) ds[i].className = i === cur ? (i === 0 ? 'on first' : 'on') : '';
+    }
+    requestAnimationFrame(mDraw);
+  }
+  function mStart() {
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) { say('이 브라우저는 메트로놈 소리를 지원하지 않습니다.'); return; }
+    if (!mctx) mctx = new AC();
+    if (mctx.state === 'suspended') mctx.resume();
+    if (!mNoise) {
+      mNoise = mctx.createBuffer(1, Math.round(mctx.sampleRate * 0.05), mctx.sampleRate);
+      var ch = mNoise.getChannelData(0);
+      for (var i = 0; i < ch.length; i++) ch[i] = Math.random() * 2 - 1;
+    }
+    mOn = true; mBeat = 0; mQueue = []; mNext = mctx.currentTime + 0.08;
+    mSchedule(); mTimer = setInterval(mSchedule, 25); requestAnimationFrame(mDraw);
+    $('mPlay').setAttribute('data-on', 'true'); $('mPlay').setAttribute('aria-label', '메트로놈 정지');
+    $('mIcon').setAttribute('d', PAUSE);
+    requestWake();
+  }
+  function mStop() {
+    mOn = false; clearInterval(mTimer); mQueue = [];
+    var ds = $('mDots').children;
+    for (var i = 0; i < ds.length; i++) ds[i].className = '';
+    $('mPlay').setAttribute('data-on', 'false'); $('mPlay').setAttribute('aria-label', '메트로놈 시작');
+    $('mIcon').setAttribute('d', PLAY);
+  }
+  $('mPlay').onclick = function () { if (mOn) mStop(); else mStart(); };
+  $('bpmRange').oninput = function () { setBpm(+this.value); };
+  $('segBeats').onclick = function (e) {
+    var v = e.target.getAttribute && e.target.getAttribute('data-v'); if (!v) return;
+    beats = +v; mBeat = 0; save(); paintMetro();
+  };
+  $('mSoundBtn').onclick = function () { mSound = !mSound; save(); paintMetro(); };
+  // − / + 는 누르고 있으면 계속 바뀐다
+  function holdRepeat(el, step) {
+    var t1 = 0, t2 = 0;
+    var end = function () { clearTimeout(t1); clearInterval(t2); };
+    el.addEventListener('pointerdown', function (e) {
+      e.preventDefault(); setBpm(bpm + step);
+      t1 = setTimeout(function () { t2 = setInterval(function () { setBpm(bpm + step); }, 70); }, 400);
+    });
+    el.addEventListener('pointerup', end); el.addEventListener('pointerleave', end); el.addEventListener('pointercancel', end);
+    el.addEventListener('click', function (e) { if (e.detail === 0) setBpm(bpm + step); });   // 키보드
+  }
+  holdRepeat($('bpmDown'), -1); holdRepeat($('bpmUp'), 1);
+  paintMetro();
 
   $('goBtn').onclick = function () { if (running) stop(); else start(); };
   $('micSel').onchange = function () { if (running) { stop(); start(); } };
