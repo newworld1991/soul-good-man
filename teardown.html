@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>New Product Patent &amp; Teardown · 디스플레이 삼국지</title>
+<meta name="description" content="New Product Patent &amp; Teardown (준비 중)">
+<meta property="og:type" content="website">
+<meta property="og:title" content="New Product Patent &amp; Teardown · 디스플레이 삼국지">
+<meta property="og:description" content="New Product Patent &amp; Teardown (준비 중)">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%B0%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <a class="brand" href="index.html"><span data-ko="디스플레이 삼국지" data-zh="全球显示屏三国演义" data-ja="ディスプレイグローバル三国志">디스플레이 삼국지</span><em lang="en">The Battle for Supremacy</em></a>
+    <nav><a href="index.html">홈</a><a href="archive.html">아카이브</a></nav>
+  </div>
+  <div class="wrap"><nav class="menu" aria-label="메뉴"><div class="mw"><a href="watch.html">Market &amp; Patent Watch</a><a href="china-watch.html">China Display Watch</a><a href="patent-analysis.html">Patent In-depth Analysis</a><a href="teardown.html" class=on>New Product Patent &amp; Teardown</a></div><div class="mr m1"><b>Daily Issues Analysis</b><div class="mi"><a href="korea.html">한국</a><a href="china.html">중국</a><a href="japan.html">일본·기타</a></div></div><div class="mr m2"><b>특허&amp;기술개발동향 분석</b><div class="mi"><a href="tech-xr.html">XR&amp;Micro Display</a><a href="tech-microled.html">Micro-LED</a><a href="tech-oled.html">Advanced OLED</a><a href="tech-freeform.html">Freeform Display</a><a href="tech-beyond.html">Beyond Display</a><a href="tech-auto.html">미래자동차 디스플레이</a></div></div><div class="mr m3"><b>신제품 동향 SCM분석</b><div class="mi"><a href="scm-tv.html">TV</a><a href="scm-phone.html">Smartphone</a><a href="scm-monitor.html">Monitor</a><a href="scm-notepc.html">Note PC</a><a href="scm-arglass.html">AR Glass</a><a href="scm-watch.html">Smart Watch</a></div></div></nav></div>
+  
+</header>
+
+<main class="wrap">
+<h1>New Product Patent &amp; Teardown</h1>
+<p class="lead">준비 중인 페이지입니다.</p>
+</main>
+<footer><div class="wrap"><p>원문의 저작권은 각 언론사에 있습니다. 이 사이트는 제목과 원문 링크, 자체 생성한 정리만 제공하며 정리는 AI가 작성하므로 오류가 있을 수 있습니다. 정확한 내용은 원문에서 확인하세요.</p></div></footer>
+
+<script>
+(function(){
+  var KEY="lang",TAG={ko:"ko",zh:"zh-CN",ja:"ja"};
+  function set(l){
+    if(!TAG[l])l="ko";
+    document.querySelectorAll("[data-"+l+"]").forEach(function(el){el.textContent=el.getAttribute("data-"+l);el.lang=TAG[l];});
+    document.querySelectorAll(".langs button").forEach(function(b){b.classList.toggle("on",b.dataset.lang===l);});
+    try{l==="ko"?localStorage.removeItem(KEY):localStorage.setItem(KEY,l);}catch(e){}
+  }
+  document.addEventListener("click",function(e){var b=e.target.closest(".langs button");if(b)set(b.dataset.lang);});
+  var saved="";try{saved=localStorage.getItem(KEY)||"";}catch(e){}
+  if(saved)set(saved);
+})();
+</script>
+</body>
+</html>
